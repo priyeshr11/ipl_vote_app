@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
-
-
 import streamlit as st
 import pandas as pd
 from wordcloud import WordCloud
@@ -24,21 +21,45 @@ st.set_page_config(page_title="IPL Team Voting", layout="centered")
 st.title("🏏 Vote for Your Favorite IPL Teams")
 st.markdown("Pick **exactly 4 teams** you support the most!")
 
-# User selection
+# Step 1: Collect user information (name and team)
+name = st.text_input("What's your name?")
+
+# Step 2: User selection for team prediction and support
+prediction = st.selectbox("Who do you think will win IPL 2025?", teams)
+support = st.selectbox("Which team do you support this season?", teams)
+
+# Step 3: User selection for 4 teams
 selected_teams = st.multiselect("Select 4 IPL Teams:", teams, max_selections=4)
 
+# Handle submission
 if st.button("Submit Vote"):
-    if len(selected_teams) != 4:
-        st.warning("Please select exactly 4 teams.")
+    if len(selected_teams) != 4 or not name:
+        st.warning("Please select exactly 4 teams and provide your name.")
     else:
-        # Save votes to CSV
-        vote_df = pd.DataFrame([selected_teams], columns=["Team1", "Team2", "Team3", "Team4"])
-        if not os.path.exists(VOTE_FILE):
-            vote_df.to_csv(VOTE_FILE, index=False)
-        else:
-            vote_df.to_csv(VOTE_FILE, mode='a', header=False, index=False)
-        st.success("✅ Vote submitted anonymously!")
+        # Store the votes
+        vote_data = {
+            "Name": name,
+            "Prediction": prediction,
+            "Support": support,
+            "Team1": selected_teams[0],
+            "Team2": selected_teams[1],
+            "Team3": selected_teams[2],
+            "Team4": selected_teams[3]
+        }
 
+        # Check if the file exists, if not create it
+        if not os.path.exists(VOTE_FILE):
+            df = pd.DataFrame([vote_data])
+            df.to_csv(VOTE_FILE, index=False)
+        else:
+            # Append vote to the CSV file
+            df = pd.read_csv(VOTE_FILE)
+            df = df.append(vote_data, ignore_index=True)
+            df.to_csv(VOTE_FILE, index=False)
+        
+        st.success(f"✅ Vote submitted successfully, {name}!")
+
+# Step 4: Admin Panel - Generate Word Cloud
 st.divider()
 st.header("📊 Users Choice: Top four teams")
 
@@ -47,7 +68,7 @@ if st.button("Generate Word Cloud"):
         st.warning("No votes found yet.")
     else:
         all_votes = pd.read_csv(VOTE_FILE)
-        word_list = all_votes.values.flatten().tolist()
+        word_list = all_votes[["Team1", "Team2", "Team3", "Team4"]].values.flatten().tolist()
 
         wc_text = " ".join(word_list)
         wc = WordCloud(width=800, height=400, background_color="white").generate(wc_text)
@@ -58,9 +79,22 @@ if st.button("Generate Word Cloud"):
         ax.axis("off")
         st.pyplot(fig)
 
+# Step 5: Display Vote Counts for each Team and Prediction
+if st.button("Show Vote Counts"):
+    if os.path.exists(VOTE_FILE):
+        all_votes = pd.read_csv(VOTE_FILE)
 
-# In[ ]:
+        # Count votes for each team
+        team_votes = all_votes[["Team1", "Team2", "Team3", "Team4"]].apply(pd.Series.value_counts).sum(axis=1)
+        team_votes = team_votes.sort_values(ascending=False)
 
+        st.subheader("🗳️ Vote Counts for Each Team")
+        st.write(team_votes)
 
-
+        # Count predictions for winner
+        prediction_counts = all_votes["Prediction"].value_counts()
+        st.subheader("📊 IPL 2025 Prediction Counts")
+        st.write(prediction_counts)
+    else:
+        st.warning("No votes found yet.")
 
