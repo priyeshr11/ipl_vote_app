@@ -6,7 +6,7 @@ import pandas as pd
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import os
-
+ADMIN_PASSWORD = "aplipublic2013"
 # IPL team list
 teams = [
     "Chennai Super Kings", "Mumbai Indians", "Kolkata Knight Riders",
@@ -60,12 +60,22 @@ if st.button("Submit Vote"):
         
         st.success(f"✅ Vote submitted successfully, {name}!")
         
-if st.button("Reset Results"):
-    if os.path.exists(VOTE_FILE):
-        os.remove(VOTE_FILE)
-        st.success("🧹 Results have been reset!")
-    else:
-        st.warning("No results found to reset.")
+st.divider()
+
+# Admin Password Input for Reset
+admin_password = st.text_input("Enter admin password to reset results", type="password")
+
+if admin_password == ADMIN_PASSWORD:
+    if st.button("Reset Results"):
+        if os.path.exists(VOTE_FILE):
+            os.remove(VOTE_FILE)
+            st.success("🧹 Results have been reset!")
+        else:
+            st.warning("No results found to reset.")
+else:
+    if admin_password:
+        st.warning("Incorrect password! Only the admin can reset the results.")
+
 # Step 4: Admin Panel - Generate Word Cloud
 st.divider()
 st.header("📊 Users Choice: Top four teams")
