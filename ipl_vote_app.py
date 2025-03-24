@@ -18,7 +18,8 @@ teams = [
 VOTE_FILE = "votes.csv"
 
 st.set_page_config(page_title="IPL Team Voting", layout="centered")
-st.title("🏏 Vote for Your Favorite IPL Teams")
+st.title("🏏 Welcome to Vote Your Favorite IPL Teams")
+st.subheader("This experience is all crafted with care by Priyesh. Enjoy the fun and vote away!")
 st.markdown("Pick **exactly 4 teams** you support the most!")
 
 # Step 1: Collect user information (name and team)
