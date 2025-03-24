@@ -40,7 +40,7 @@ if st.button("Submit Vote"):
         st.success("✅ Vote submitted anonymously!")
 
 st.divider()
-st.header("📊 Admin Panel: Generate Word Cloud")
+st.header("📊 Users Choice: Top four teams")
 
 if st.button("Generate Word Cloud"):
     if not os.path.exists(VOTE_FILE):
