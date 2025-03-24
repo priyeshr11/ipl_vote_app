@@ -59,7 +59,13 @@ if st.button("Submit Vote"):
             df.to_csv(VOTE_FILE, index=False)
         
         st.success(f"✅ Vote submitted successfully, {name}!")
-
+        
+if st.button("Reset Results"):
+    if os.path.exists(VOTE_FILE):
+        os.remove(VOTE_FILE)
+        st.success("🧹 Results have been reset!")
+    else:
+        st.warning("No results found to reset.")
 # Step 4: Admin Panel - Generate Word Cloud
 st.divider()
 st.header("📊 Users Choice: Top four teams")
