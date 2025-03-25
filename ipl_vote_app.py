@@ -103,14 +103,44 @@ if st.button("Show Vote Counts"):
         all_votes = pd.read_csv(VOTE_FILE)
 
         # Count votes for each team
-        support_counts = all_votes["Support"].value_counts()
+        support_counts = all_votes["Support"].value_counts().reset_index()
+        support_counts.columns = ["Team", "Support Votes"]
+        
         st.subheader("🗳️ IPL 2025 Most Supported team")
-        st.write(support_counts)
+        #st.write(support_counts)
+        fig_support = px.bar(
+            support_counts,
+            x="Team",
+            y="Support Votes",
+            color="Team",
+            title="Support Votes by Team",
+            text="Support Votes",
+            color_discrete_sequence=px.colors.qualitative.Set3,
+        )
+        fig_support.update_traces(textposition='outside')
+        fig_support.update_layout(showlegend=False)
+        st.plotly_chart(fig_support, use_container_width=True)
 
         # Count predictions for winner
-        prediction_counts = all_votes["Prediction"].value_counts()
+        prediction_counts = all_votes["Prediction"].value_counts().reset_index()
+        prediction_counts.columns = ["Team", "Predicted Wins"]
+        
         st.subheader("📊 IPL 2025 Win Prediction")
-        st.write(prediction_counts)
+
+        fig_prediction = px.bar(
+            prediction_counts,
+            x="Team",
+            y="Predicted Wins",
+            color="Team",
+            title="Predicted Winner Votes by Team",
+            text="Predicted Wins",
+            color_discrete_sequence=px.colors.qualitative.Pastel,
+        )
+        fig_prediction.update_traces(textposition='outside')
+        fig_prediction.update_layout(showlegend=False)
+        st.plotly_chart(fig_prediction, use_container_width=True)
+
+        #st.write(prediction_counts)
     else:
         st.warning("No votes found yet.")
 
