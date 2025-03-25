@@ -162,10 +162,10 @@ if st.button("Show Vote Counts"):
     # Display as a bulleted list
         for name in participant_names:
             st.markdown(f"- {name}")
-        else:
+    else:
             st.info("No participants yet. Be the first to vote!")
 
         #st.write(prediction_counts)
-    else:
-        st.warning("No votes found yet.")
+else:
+    st.warning("No votes found yet.")
 
