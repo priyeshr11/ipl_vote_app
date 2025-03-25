@@ -148,6 +148,23 @@ if st.button("Show Vote Counts"):
         fig_prediction.update_layout(showlegend=False)
         st.plotly_chart(fig_prediction, use_container_width=True)
 
+        # At the end of your Streamlit app (after vote logic)
+        st.markdown("---")  # Just a horizontal divider
+
+        st.subheader("👥 Participants List")
+
+    # Remove empty or duplicate names
+        participant_names = all_votes["Name"].dropna().drop_duplicates().tolist()
+
+    # Sort alphabetically if you like
+        participant_names.sort()
+
+    # Display as a bulleted list
+        for name in participant_names:
+            st.markdown(f"- {name}")
+        else:
+            st.info("No participants yet. Be the first to vote!")
+
         #st.write(prediction_counts)
     else:
         st.warning("No votes found yet.")
