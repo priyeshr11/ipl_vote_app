@@ -7,6 +7,7 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import os
 import plotly.express as px
+from collections import Counter
 
 ADMIN_PASSWORD = "aplipublic2013"
 # IPL team list
