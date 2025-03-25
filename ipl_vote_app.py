@@ -20,7 +20,6 @@ VOTE_FILE = "votes.csv"
 st.set_page_config(page_title="IPL Team Voting", layout="centered")
 st.title("🏏 Welcome to Vote Your Favorite IPL Teams")
 st.subheader("This experience is all crafted with care by Priyesh. Enjoy the fun and vote away!")
-st.markdown("Pick **exactly 4 teams** you support the most!")
 
 # Step 1: Collect user information (name and team)
 name = st.text_input("What's your name?")
@@ -30,6 +29,7 @@ prediction = st.selectbox("Who do you think will win IPL 2025?", teams)
 support = st.selectbox("Which team do you support this season?", teams)
 
 # Step 3: User selection for 4 teams
+st.markdown("Pick **exactly 4 teams** you support the most!")
 selected_teams = st.multiselect("Select 4 IPL Teams:", teams, max_selections=4)
 
 # Handle submission
@@ -103,15 +103,13 @@ if st.button("Show Vote Counts"):
         all_votes = pd.read_csv(VOTE_FILE)
 
         # Count votes for each team
-        team_votes = all_votes[["Team1", "Team2", "Team3", "Team4"]].apply(pd.Series.value_counts).sum(axis=1)
-        team_votes = team_votes.sort_values(ascending=False)
-
-        st.subheader("🗳️ Vote Counts for Each Team")
-        st.write(team_votes)
+        support_counts = all_votes["Support"].value_counts()
+        st.subheader("🗳️ IPL 2025 Most Supported team")
+        st.write(support_counts)
 
         # Count predictions for winner
         prediction_counts = all_votes["Prediction"].value_counts()
-        st.subheader("📊 IPL 2025 Prediction Counts")
+        st.subheader("📊 IPL 2025 Win Prediction")
         st.write(prediction_counts)
     else:
         st.warning("No votes found yet.")
