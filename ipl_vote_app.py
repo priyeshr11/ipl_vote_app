@@ -6,6 +6,8 @@ import pandas as pd
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import os
+import plotly.express as px
+
 ADMIN_PASSWORD = "aplipublic2013"
 # IPL team list
 teams = [
