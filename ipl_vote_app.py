@@ -94,7 +94,9 @@ if st.button("Generate Word Cloud"):
 
         wc_text = " ".join(word_list)
         #wc = WordCloud(width=800, height=400, background_color="white").generate(wc_text)
-        wc = WordCloud(width=800, height=400, background_color="white").generate_from_frequencies(Counter(word_list))
+        wc = WordCloud(width=800, height=400, background_color="white").generate_from_frequencies(
+            Counter(word_list)
+        )
 
         st.subheader("🖼️ Word Cloud of Team Popularity")
         fig, ax = plt.subplots()
