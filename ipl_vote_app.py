@@ -22,7 +22,7 @@ VOTE_FILE = "votes.csv"
 
 st.set_page_config(page_title="IPL Team Voting", layout="centered")
 st.title("🏏 Welcome to Vote Your Favorite IPL Teams")
-st.subheader("This experience is all crafted with care by . Enjoy the fun and vote away!")
+st.subheader("This experience is all crafted with care by Priyesh. Enjoy the fun and vote away!")
 
 # Step 1: Collect user information (name and team)
 name = st.text_input("What's your name?")
