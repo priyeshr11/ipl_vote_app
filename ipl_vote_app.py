@@ -55,7 +55,8 @@ if st.button("Submit Vote"):
         else:
             # Append vote to the CSV file
             df = pd.read_csv(VOTE_FILE)
-            df = df.append(vote_data, ignore_index=True)
+            new_vote_df = pd.DataFrame([vote_data])
+            df = pd.concat([df, new_vote_df], ignore_index=True)
             df.to_csv(VOTE_FILE, index=False)
         
         st.success(f"✅ Vote submitted successfully, {name}!")
