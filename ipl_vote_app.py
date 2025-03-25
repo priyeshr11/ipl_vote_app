@@ -32,7 +32,7 @@ prediction = st.selectbox("Who do you think will win IPL 2025?", teams)
 support = st.selectbox("Which team do you support this season?", teams)
 
 # Step 3: User selection for 4 teams
-st.markdown("Pick **exactly 4 teams** you support the most!")
+st.markdown("Pick **exactly 4 teams** you you think will finish at top 4!")
 selected_teams = st.multiselect("Select 4 IPL Teams:", teams, max_selections=4)
 
 # Handle submission
