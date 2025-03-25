@@ -91,9 +91,9 @@ if st.button("Generate Word Cloud"):
         all_votes = pd.read_csv(VOTE_FILE)
         word_list = all_votes[["Team1", "Team2", "Team3", "Team4"]].values.flatten().tolist()
         # Replace spaces with underscores to keep multi-word team names together
-        word_list = [team.replace(" ", "_") for team in word_list]
+        #word_list = [team.replace(" ", "_") for team in word_list]
 
-        wc_text = " ".join(word_list)
+       # wc_text = " ".join(word_list)
         #wc = WordCloud(width=800, height=400, background_color="white").generate(wc_text)
         wc = WordCloud(width=800, height=400, background_color="white").generate_from_frequencies(
             Counter(word_list)
