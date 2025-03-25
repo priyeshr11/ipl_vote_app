@@ -166,6 +166,6 @@ if st.button("Show Vote Counts"):
             st.info("No participants yet. Be the first to vote!")
 
         #st.write(prediction_counts)
-else:
-    st.warning("No votes found yet.")
+    else:
+        st.warning("No votes found yet.")
 
