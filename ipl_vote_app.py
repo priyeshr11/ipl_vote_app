@@ -135,7 +135,7 @@ if st.button("Show Vote Counts"):
         
         st.subheader("📊 IPL 2025 Win Prediction")
 
-        fig_prediction = px.bar(
+        fig_prediction = px.barh(
             prediction_counts,
             x="Team",
             y="Predicted Wins",
