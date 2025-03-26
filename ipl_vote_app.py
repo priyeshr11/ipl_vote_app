@@ -169,3 +169,57 @@ if st.button("Show Vote Counts"):
 #else:
 #    st.warning("No votes found yet.")
 
+
+from datetime import datetime
+
+
+DELETE_LOG = "delete_log.csv"
+ADMIN_SECRET = ADMIN_PASSWORD # Change this to a secure password
+
+# --- Admin Panel ---
+with st.expander("🔐 Admin Panel (Authorised Access Only)"):
+    admin_password = st.text_input("Enter admin password:", type="password")
+
+    if admin_password == ADMIN_SECRET:
+        st.success("Access granted.")
+
+        if os.path.exists(VOTE_FILE):
+            df = pd.read_csv(VOTE_FILE)
+
+            st.subheader("🧹 Current Vote Records")
+            edited_df = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+            if st.button("💾 Save Edited Table"):
+                edited_df.to_csv(VOTE_FILE, index=False)
+                st.success("Changes saved successfully.")
+
+            st.markdown("---")
+            st.subheader("🗑️ Delete Entry by Name")
+
+            # Clean and drop blank names
+            name_options = df["Name"].dropna().drop_duplicates().sort_values().tolist()
+            name_to_delete = st.selectbox("Select name to delete:", options=[""] + name_options)
+
+            if st.button("Delete Selected Entry"):
+                if name_to_delete in df["Name"].values:
+                    df = df[df["Name"] != name_to_delete]
+                    df.to_csv(VOTE_FILE, index=False)
+
+                    # Log deletion
+                    log_entry = pd.DataFrame([{
+                        "Name": name_to_delete,
+                        "Deleted At": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    }])
+                    if os.path.exists(DELETE_LOG):
+                        log_df = pd.read_csv(DELETE_LOG)
+                        log_df = pd.concat([log_df, log_entry], ignore_index=True)
+                    else:
+                        log_df = log_entry
+                    log_df.to_csv(DELETE_LOG, index=False)
+
+                    st.success(f"Deleted entry for '{name_to_delete}' and logged it.")
+                else:
+                    st.warning("Name not found in the current records.")
+        else:
+            st.info("No vote data found yet.")
+    elif admin_password:
+        st.error("Incorrect password.")
