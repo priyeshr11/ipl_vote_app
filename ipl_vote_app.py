@@ -263,6 +263,18 @@ with st.expander("🔐 Admin Panel (Authorised Access Only)"):
             st.info("No vote data found yet.")
     elif admin_password:
         st.error("Incorrect password.")
+
+import subprocess
+
+def git_push_votes():
+    try:
+        subprocess.run(["git", "add", "votes.csv"], check=True)
+        subprocess.run(["git", "commit", "-m", "Update votes data"], check=True)
+        subprocess.run(["git", "push", "origin", "main"], check=True)
+        print("Votes pushed to GitHub.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error during git operation: {e}")
+
 git add votes.csv
 git commit -m "Update votes data"
 git push origin main
