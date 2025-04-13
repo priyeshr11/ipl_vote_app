@@ -174,39 +174,41 @@ if st.button("Show Vote Counts"):
 #else:
 #    st.warning("No votes found yet.")
 
-# Orange Cap Predictions
-if "OrangeCap" in all_votes.columns:
-    st.subheader("🏏 Orange Cap Predictions")
+# Orange and Purple Cap Visualizations
+if os.path.exists(VOTE_FILE):
+    all_votes = pd.read_csv(VOTE_FILE)
 
-    oc_counts = all_votes["OrangeCap"].dropna().value_counts().reset_index()
-    oc_counts.columns = ["Player", "Votes"]
+    if "OrangeCap" in all_votes.columns and not all_votes["OrangeCap"].dropna().empty:
+        st.subheader("🏏 Orange Cap Predictions")
 
-    fig_oc = px.treemap(
-        oc_counts,
-        path=["Player"],
-        values="Votes",
-        title="Orange Cap Contenders",
-        color="Votes",
-        color_continuous_scale="Sunset"
-    )
-    st.plotly_chart(fig_oc, use_container_width=True)
+        oc_counts = all_votes["OrangeCap"].dropna().value_counts().reset_index()
+        oc_counts.columns = ["Player", "Votes"]
 
-# Purple Cap Predictions
-if "PurpleCap" in all_votes.columns:
-    st.subheader("🎯 Purple Cap Predictions")
+        fig_oc = px.treemap(
+            oc_counts,
+            path=["Player"],
+            values="Votes",
+            title="Orange Cap Contenders",
+            color="Votes",
+            color_continuous_scale="Sunset"
+        )
+        st.plotly_chart(fig_oc, use_container_width=True)
 
-    pc_counts = all_votes["PurpleCap"].dropna().value_counts().reset_index()
-    pc_counts.columns = ["Player", "Votes"]
+    if "PurpleCap" in all_votes.columns and not all_votes["PurpleCap"].dropna().empty:
+        st.subheader("🎯 Purple Cap Predictions")
 
-    fig_pc = px.sunburst(
-        pc_counts,
-        path=["Player"],
-        values="Votes",
-        title="Purple Cap Contenders",
-        color="Votes",
-        color_continuous_scale="Viridis"
-    )
-    st.plotly_chart(fig_pc, use_container_width=True)
+        pc_counts = all_votes["PurpleCap"].dropna().value_counts().reset_index()
+        pc_counts.columns = ["Player", "Votes"]
+
+        fig_pc = px.sunburst(
+            pc_counts,
+            path=["Player"],
+            values="Votes",
+            title="Purple Cap Contenders",
+            color="Votes",
+            color_continuous_scale="Viridis"
+        )
+        st.plotly_chart(fig_pc, use_container_width=True)
 
 from datetime import datetime
 
