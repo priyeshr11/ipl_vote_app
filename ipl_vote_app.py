@@ -109,6 +109,8 @@ if st.button("Generate Word Cloud"):
         ax.imshow(wc, interpolation="bilinear")
         ax.axis("off")
         st.pyplot(fig)
+else:
+   st.warning("No votes found yet.")
 
 # Step 5: Display Vote Counts for each Team and Prediction
 if st.button("Show Vote Counts"):
