@@ -170,7 +170,7 @@ if st.button("Show Vote Counts"):
     else:
             st.info("No participants yet. Be the first to vote!")
 
-        st.write(prediction_counts)
+    st.write(prediction_counts)
 else:
    st.warning("No votes found yet.")
 
