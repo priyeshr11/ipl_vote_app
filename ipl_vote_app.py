@@ -34,6 +34,9 @@ support = st.selectbox("Which team do you support this season?", teams)
 # Step 3: User selection for 4 teams
 st.markdown("Pick **exactly 4 teams** you you think will finish at top 4!")
 selected_teams = st.multiselect("Select 4 IPL Teams:", teams, max_selections=4)
+# Step 2.1: Orange and Purple Cap Predictions
+orange_cap = st.text_input("Who do you think will win the Orange Cap (Top Run Scorer)?")
+purple_cap = st.text_input("Who do you think will win the Purple Cap (Top Wicket Taker)?")
 
 # Handle submission
 if st.button("Submit Vote"):
@@ -48,7 +51,9 @@ if st.button("Submit Vote"):
             "Team1": selected_teams[0],
             "Team2": selected_teams[1],
             "Team3": selected_teams[2],
-            "Team4": selected_teams[3]
+            "Team4": selected_teams[3],
+            "OrangeCap": orange_cap,
+            "PurpleCap": purple_cap
         }
 
         # Check if the file exists, if not create it
@@ -169,6 +174,39 @@ if st.button("Show Vote Counts"):
 #else:
 #    st.warning("No votes found yet.")
 
+# Orange Cap Predictions
+if "OrangeCap" in all_votes.columns:
+    st.subheader("🏏 Orange Cap Predictions")
+
+    oc_counts = all_votes["OrangeCap"].dropna().value_counts().reset_index()
+    oc_counts.columns = ["Player", "Votes"]
+
+    fig_oc = px.treemap(
+        oc_counts,
+        path=["Player"],
+        values="Votes",
+        title="Orange Cap Contenders",
+        color="Votes",
+        color_continuous_scale="Sunset"
+    )
+    st.plotly_chart(fig_oc, use_container_width=True)
+
+# Purple Cap Predictions
+if "PurpleCap" in all_votes.columns:
+    st.subheader("🎯 Purple Cap Predictions")
+
+    pc_counts = all_votes["PurpleCap"].dropna().value_counts().reset_index()
+    pc_counts.columns = ["Player", "Votes"]
+
+    fig_pc = px.sunburst(
+        pc_counts,
+        path=["Player"],
+        values="Votes",
+        title="Purple Cap Contenders",
+        color="Votes",
+        color_continuous_scale="Viridis"
+    )
+    st.plotly_chart(fig_pc, use_container_width=True)
 
 from datetime import datetime
 
