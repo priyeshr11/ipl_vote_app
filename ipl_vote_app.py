@@ -263,3 +263,6 @@ with st.expander("🔐 Admin Panel (Authorised Access Only)"):
             st.info("No vote data found yet.")
     elif admin_password:
         st.error("Incorrect password.")
+git add votes.csv
+git commit -m "Update votes data"
+git push origin main
